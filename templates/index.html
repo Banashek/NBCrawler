@@ -1,1 +1,6 @@
-<h1>Index Page</h1>
+<script src={{ url_for('static', filename='index.js') }}></script>
+
+<h1>Welcome to NBCrawler</h1>
+<p>Enter a search term below, then hit the scrape button to see the results</p>
+<input type="text" name="input" id="queryInput" value="nbc">
+<button name="scrapeButton" onClick="scrape()">Scrape</button>

@@ -13,8 +13,7 @@ Pre-requisites:
 How to run:
 - Ensure mongo is up and running on the default port
 - Change into the main directory and run ```python3 flaskApp.py```
-- Browse to [http://localhost:5000](http://localhost:5000) to see the index page
-- Custom searches can be done by going to http://localhost:5000/scrape/YOURSEARCHTERMHERE
+- Browse to [http://localhost:5000](http://localhost:5000) to see the index page and type in your search query, then hit scrap
 
 Things not included (but definitely would be high on the todo list):
 - Tests (nothing is tested, since this was made in a few hours)
