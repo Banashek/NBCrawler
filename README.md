@@ -13,10 +13,8 @@ Pre-requisites:
 How to run:
 - Ensure mongo is up and running on the default port
 - Change into the main directory and run ```python3 flaskApp.py```
-- Browse to [http://localhost:5000](http://localhost:5000) to see the index page and type in your search query, then hit scrap
+- Browse to [http://localhost:5000](http://localhost:5000) to see the index page and type in your search query, then hit scrape
 
 Things not included (but definitely would be high on the todo list):
 - Tests (nothing is tested, since this was made in a few hours)
-- Error Handling (")
-- Something more robust than requests and beautifulsoup smashed into one file (perhaps something more modular)
-- Better UI/UX (maybe a small crud site)
+- Better UI/UX
