@@ -10,8 +10,11 @@ Pre-requisites:
 - [PyMongo]("http://api.mongodb.org/python/current/")
 - [Flask]("http://flask.pocoo.org/")
 
-Steps to follow:
+How to run:
 - Ensure mongo is up and running on the default port
+- Change into the main directory and run ```python3 flaskApp.py```
+- Browse to [http://localhost:5000](http://localhost:5000) to see the index page
+- Custom searches can be done by going to http://localhost:5000/scrape/YOURSEARCHTERMHERE
 
 Things not included (but definitely would be high on the todo list):
 - Tests (nothing is tested, since this was made in a few hours)
