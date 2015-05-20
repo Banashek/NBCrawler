@@ -1,3 +1,5 @@
+import datetime
+
 class GoogleResult:
 
     """
@@ -9,9 +11,23 @@ class GoogleResult:
             - subtext: the subtext partial definition for the result
     """
 
-    def __init__(self, searchterm, title, link, subtext):
+    def __init__(self, search_query, title, link, subtext, searchterms):
         """Creates a new GoogleResult object"""
-        self.searchterm = searchterm
+        self.search_query = search_query
         self.title = title
         self.link = link
         self.subtext = subtext
+        self.searchterms = searchterms
+	
+    def save(self, db):
+        """Saves the GoogleResult to mongo"""
+        db.googleResults.insert_one(
+            {
+                    "searchQuery": self.search_query,
+                    "title": self.title,
+                    "link": self.link,
+                    "subtext": self.subtext,
+                    "searchterms" : self.searchterms, # array
+                    "queryTime": datetime.datetime.now()
+            }
+        )

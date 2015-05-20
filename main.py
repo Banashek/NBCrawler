@@ -1,15 +1,35 @@
 import urllib.request, requests, json
 from bs4 import BeautifulSoup
 from Models.GoogleResult import GoogleResult
+from pymongo import MongoClient
 
-# url = "http://www.google.ca/search?hl=en&q=nbc+universal&btnG=Google+Search&meta="
-# url = "https://duckduckgo.com/?q=nbc"
 
 # Parameters
 num_results = 20
-search_query = "nbc+universal"
+# search_query = "nbc+universal"
+search_query = "nbc"
 
-search_terms = search_query.split(' ')
+# Set up the database
+try:
+    client = MongoClient()
+except Exception as e:
+    print("Unable to connect to the database. Is Mongo running and bound to port 27017?")
+    raise e
+
+try:
+    db = client.nbcrawler
+except Exception as e:
+    print("Unable to open the nbcrawler database. Check mongo output for errors.")
+    raise e
+
+# First check if we already have the query in the database
+cursor = db.googleResults.find({"searchQuery": search_query})
+
+if cursor.count() > 1:
+    pass
+else:
+    pass
+
 
 # Build the url
 url_base = "http://www.google.ca/search?" 
@@ -41,13 +61,21 @@ for result in soup.find_all('li', class_="g"):
         link_subtext = result.find("span", class_="st").get_text()
     else:
         link_subtext = "No subtext for this node"
-    gres = GoogleResult(search_query, link_title, link_href, link_subtext)
+    search_terms = search_query.split(' ')
+    gres = GoogleResult(search_query, link_title, link_href, link_subtext, ["test", "test2", "test3"])
+    gres.save(db)
     results_array.append(gres)
 
 
-for gr in results_array:
-    print("Search term: " + gr.searchterm)
-    print("Title: " + gr.title)
-    print("Link: " + gr.link)
-    print("Subtext: " + gr.subtext)
-    print()
+# for gr in results_array:
+#     print("Search term: " + gr.searchterm)
+#     print("Title: " + gr.title)
+#     print("Link: " + gr.link)
+#     print("Subtext: " + gr.subtext)
+#     print()
+
+
+
+
+# url = "http://www.google.ca/search?hl=en&q=nbc+universal&btnG=Google+Search&meta="
+# url = "https://duckduckgo.com/?q=nbc"
