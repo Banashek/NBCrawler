@@ -2,5 +2,14 @@
 {% for result in results %}
   <li><a href="{{ result['link'] }}">{{ result['title'] }}</a></li>
   <span>{{ result['subtext'] }}</span>
+  <br />
+  <p>This page uses the following scripts:</p>
+  <ul>
+  	{% for script in result['details'] %}
+	  <li>{{ script }}</li>
+	{% endfor %}
+  </ul>
+  <br />
+  <br />
 {% endfor %}
 </ul>

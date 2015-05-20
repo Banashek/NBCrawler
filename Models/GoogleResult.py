@@ -11,13 +11,14 @@ class GoogleResult:
             - subtext: the subtext partial definition for the result
     """
 
-    def __init__(self, search_query, title, link, subtext, searchterms):
+    def __init__(self, query, title, link, subtext, searchterms, scripts):
         """Creates a new GoogleResult object"""
-        self.search_query = search_query
+        self.search_query = query
         self.title = title
         self.link = link
         self.subtext = subtext
         self.searchterms = searchterms
+        self.link_scripts = scripts
 	
     def save(self, db):
         """Saves the GoogleResult to mongo"""
@@ -28,6 +29,7 @@ class GoogleResult:
                     "link": self.link,
                     "subtext": self.subtext,
                     "searchterms" : self.searchterms, # array
-                    "queryTime": datetime.datetime.now()
+                    "queryTime": datetime.datetime.now(),
+                    "details": self.link_scripts
             }
         )

@@ -1,4 +1,4 @@
-import urllib.request, requests, json
+import urllib.request, requests, json, re
 from bs4 import BeautifulSoup
 from pymongo import MongoClient
 import sys
@@ -7,11 +7,9 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from Models.GoogleResult import GoogleResult
 
 def scrape_from_query(query="nbc"):
-    """TODO: Docstring for scrape_from_query.
-
+    """
     :query: Search query to scrape for
     :returns: Array of GoogleResults
-
     """
     # Parameters
     num_results = 20
@@ -36,7 +34,6 @@ def scrape_from_query(query="nbc"):
     cursor = db.googleResults.find({"searchQuery": search_query})
 
     if cursor.count() > 1:
-        print("found results in database")
         results_array = []
         cursor = db.googleResults.find({"searchQuery": search_query})
         for result in cursor:
@@ -51,7 +48,6 @@ def scrape_from_query(query="nbc"):
         meta_param = "&meta="
         num_results_param = "&num=" + num_results.__repr__()
         url = url_base + hl_param + query_param + btng_param + meta_param + num_results_param
-        print(url)
 
         headers = { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36' }
 
@@ -75,7 +71,25 @@ def scrape_from_query(query="nbc"):
             else:
                 link_subtext = "No subtext for this node"
             search_terms = search_query.split(' ')
-            gres = GoogleResult(search_query, link_title, link_href, link_subtext, ["test", "test2", "test3"])
+            link_scripts = get_scripts_from_url(link_href)
+            gres = GoogleResult(search_query, link_title, link_href, link_subtext, search_terms, link_scripts)
             gres.save(db)
             results_array.append(gres)
         return results_array
+
+def get_scripts_from_url(url):
+    """
+    Takes the urls from the google scrape and finds all the scripts, returning it as an array
+    """
+    # import pdb
+    # pdb.set_trace()
+    script_array = []
+    isHttpsOrRelative = re.compile('^https.*|^\/search')
+    if isHttpsOrRelative.match(url) is not None:
+        return script_array
+    r = requests.get(url)
+    soup = BeautifulSoup(r.text)
+    for link in soup.find_all('script'):
+        if not link.get('src') is None:
+            script_array.append(link['src'])
+    return script_array
