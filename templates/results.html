@@ -1,0 +1,6 @@
+<ul>
+{% for result in results %}
+  <li><a href="{{ result['link'] }}">{{ result['title'] }}</a></li>
+  <span>{{ result['subtext'] }}</span>
+{% endfor %}
+</ul>
