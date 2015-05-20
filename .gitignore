@@ -1,3 +1,7 @@
+# Vim files
 *~
 *.swp
 *.swo
+
+# Python bytecode
+__pycache__/
